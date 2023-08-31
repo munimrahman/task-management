@@ -91,7 +91,7 @@ const MainLayout = () => {
               </svg>
             </button>
 
-            <div className="navbar flex justify-between bg-base-100">
+            <div className="navbar md:flex justify-between bg-base-100">
               {/* <div className="flex justify-between gap-2"> */}
               <div className="form-control">
                 <input
@@ -152,15 +152,15 @@ const MainLayout = () => {
               />
             </svg>
           </label>
-          <div className="navbar flex justify-between bg-base-100">
+          <div className="navbar flex justify-end bg-base-100">
             {/* <div className="flex justify-between gap-2"> */}
-            <div className="form-control">
+            {/* <div className="form-control hidden">
               <input
                 type="text"
                 placeholder="Search"
                 className="input input-bordered w-auto md:w-auto focus:outline-none"
               />
-            </div>
+            </div> */}
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
@@ -190,10 +190,10 @@ const MainLayout = () => {
         </div>
         <div className="md:hidden drawer lg:drawer-open">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content flex flex-col items-center justify-center">
+          <div className="drawer-content">
             {/* Page content here */}
             {/* Page Content Mobile*/}
-            <div className="">
+            <div className="z-50 bg-[#F1F5F9]">
               <Outlet />
             </div>
           </div>
