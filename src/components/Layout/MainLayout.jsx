@@ -38,7 +38,7 @@ const MainLayout = () => {
           to={"/tasks"}
           className={({ isActive }) => (isActive ? activeClass : inActiveClass)}
         >
-          Tasks
+          All Tasks
         </NavLink>
       </li>
       <li>
