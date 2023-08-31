@@ -5,7 +5,24 @@ const Tasks = () => {
     <div className="min-h-screen p-5">
       <div className="flex justify-between items-center bg-white px-5 py-3 rounded-lg shadow">
         <h2 className="text-lg font-medium">All Tasks</h2>
-        <div>
+        <div className="flex">
+          {/* <div className="hidden md:flex items-center pb-2"> */}
+          <div className="hidden sm:flex border rounded px-3 mx-1 items-center">
+            <span className="text-gray-500 text-sm">Sort By:</span>
+            <select
+              name=""
+              id=""
+              className="bg-white focus:outline-none text-sm hover:cursor-pointer"
+            >
+              <option disabled selected>
+                Default
+              </option>
+              <option value="-createdAt">Newest Task</option>
+              <option value="salary">Priority Low-High</option>
+              <option value="-salary">Priority High-Low</option>
+            </select>
+          </div>
+          {/* </div> */}
           <button className="bg-[#4C6FFF] text-white px-3 py-2 rounded-lg flex gap-1 items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"

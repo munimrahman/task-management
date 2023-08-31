@@ -1,5 +1,3 @@
-import avatar from "../../assets/avatar.png";
-
 const TaskCard = () => {
   return (
     <div className="bg-white p-5 rounded-lg mb-1 shadow">
