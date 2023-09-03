@@ -8,6 +8,11 @@ export const usersApi = apiSlice.injectEndpoints({
       query: (id) => `/users/${id}`,
     }),
 
+    // get user by email
+    getUserByEmail: builder.query({
+      query: (email) => `/user-by-email?email=${email}`,
+    }),
+
     // edit user
     editUser: builder.mutation({
       query: ({ id, data }) => ({
@@ -35,4 +40,5 @@ export const usersApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetUserQuery, useEditUserMutation } = usersApi;
+export const { useGetUserQuery, useGetUserByEmailQuery, useEditUserMutation } =
+  usersApi;

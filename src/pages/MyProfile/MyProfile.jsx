@@ -18,7 +18,7 @@ const MyProfile = () => {
     data: { user: { name, email, profilePhoto, about, designation } = {} } = {},
   } = useGetUserQuery(id);
 
-  const [editUser, { data, isLoading }] = useEditUserMutation();
+  const [editUser, { isLoading }] = useEditUserMutation();
 
   const onImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -147,7 +147,7 @@ const MyProfile = () => {
               <br />
               <input
                 type="file"
-                className="file-input file-input-bordered w-full"
+                className="file-input file-input-bordered focus:outline-none w-full"
                 onChange={onImageChange}
               />
             </div>
@@ -165,7 +165,10 @@ const MyProfile = () => {
 
             <button
               type="submit"
-              className={`bg-[#4C6FFF] text-white w-24 px-3 py-2 rounded-md cursor-pointer mt-2`}
+              className={`bg-[#4C6FFF] text-white w-24 px-3 py-2 rounded-md cursor-pointer mt-2 ${
+                (loading || isLoading) && "bg-[#8ba1f8] cursor-wait"
+              }`}
+              disabled={isLoading || loading}
             >
               Update
             </button>
