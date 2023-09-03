@@ -1,26 +1,11 @@
-import MemberCard from "./MemberCard";
+import TeamCard from "./TeamCard";
 
-const TeamMembers = () => {
+const MyTeams = () => {
   return (
     <div className="min-h-screen p-5">
       <div className="flex justify-between items-center bg-white px-5 py-3 rounded-lg shadow">
-        <h2 className="text-lg font-medium">Team Members</h2>
+        <h2 className="text-lg font-medium">My Teams</h2>
         <div className="flex">
-          <div className="hidden sm:flex border rounded px-3 mx-1 items-center">
-            <span className="text-gray-500 text-sm">Filter By Team:</span>
-            <select
-              name=""
-              id=""
-              className="bg-white focus:outline-none text-sm hover:cursor-pointer"
-            >
-              <option disabled selected>
-                All
-              </option>
-              <option value="">Team One</option>
-              <option value="">Team Two</option>
-              <option value="">Team Three</option>
-            </select>
-          </div>
           <button className="bg-[#4C6FFF] text-white px-3 py-2 rounded-lg flex gap-1 items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -36,17 +21,18 @@ const TeamMembers = () => {
                 d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            Add Member
+            Create Team
           </button>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5">
-        <MemberCard />
-        <MemberCard />
-        <MemberCard />
+        <TeamCard />
+        <TeamCard />
+        <TeamCard />
+        <TeamCard />
       </div>
     </div>
   );
 };
 
-export default TeamMembers;
+export default MyTeams;

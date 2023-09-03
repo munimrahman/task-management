@@ -1,8 +1,13 @@
 const TaskCard = () => {
   return (
     <div className="bg-white p-5 rounded-lg mb-1 shadow">
-      <div className="flex justify-between items-center">
-        <h1 className="font-medium">Navbar Design</h1>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="font-medium">Navbar Design</h1>
+          <span className="bg-blue-100 text-blue-500 text-sm px-1 rounded">
+            Project Name
+          </span>
+        </div>
         <figure className="hover:bg-gray-200 rounded-full p-1 hover:cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"

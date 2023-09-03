@@ -6,6 +6,8 @@ import MyProfile from "./pages/MyProfile/MyProfile";
 import Projects from "./pages/Projects/Projects";
 import Tasks from "./pages/Tasks/Tasks";
 import TeamMembers from "./pages/TeamMembers/TeamMembers";
+import MyTeams from "./pages/MyTeams/MyTeams";
+import MyTasks from "./pages/MyTasks/MyTasks";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,12 +24,20 @@ function App() {
           element: <MyProfile />,
         },
         {
+          path: "/my-teams",
+          element: <MyTeams />,
+        },
+        {
           path: "/projects",
           element: <Projects />,
         },
         {
           path: "/tasks",
           element: <Tasks />,
+        },
+        {
+          path: "/my-tasks",
+          element: <MyTasks />,
         },
         {
           path: "/team-members",

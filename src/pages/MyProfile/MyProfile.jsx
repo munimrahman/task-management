@@ -1,26 +1,77 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import avatar from "../../assets/avatar.png";
+import {
+  useEditUserMutation,
+  useGetUserQuery,
+} from "../../features/users/usersApi";
 
 const MyProfile = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [editName, setEditName] = useState("");
   const [editEmail, setEditEmail] = useState("");
-  const [dob, setDob] = useState("");
-  const [editGender, setEditGender] = useState("");
-  const [editPhone, setEditPhone] = useState("");
+  const [editDesignation, setEditDesignation] = useState("");
+  const [imageFile, setImageFile] = useState(null);
   const [bio, setBio] = useState("");
+  const [loading, setLoading] = useState(false);
+  // TODO: replace id
+  const id = "64f23a10219063e8246e119d";
+  const {
+    data: { user: { name, email, profilePhoto, about, designation } = {} } = {},
+  } = useGetUserQuery(id);
 
+  const [editUser, { data, isLoading }] = useEditUserMutation();
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setImageFile(event.target.files[0]);
+    }
+  };
+
+  useEffect(() => {
+    if (name) setEditName(name);
+    if (email) setEditEmail(email);
+    if (designation) setEditDesignation(designation);
+    if (about) setBio(about);
+  }, [name, email, about, designation]);
+
+  const imageHostKey = "d813c7643bdd7e54cf105fb37f5f3f78";
   const handleSubmit = (e) => {
     e.preventDefault();
-    const updatedData = {
-      full_name: firstName + " " + lastName,
-      birth_date: dob,
-      gender: editGender,
-      email: editEmail,
-      phone: editPhone,
-      cover_letter: bio,
-    };
-    console.log(updatedData);
+    // upload image to image bb
+    if (imageFile) {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("image", imageFile);
+      const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
+      fetch(url, {
+        method: "POST",
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((imgData) => {
+          if (imgData.success) {
+            const updatedData = {
+              name: editName,
+              designation: editDesignation,
+              email: editEmail,
+              profilePhoto: imgData.data.url,
+              about: bio,
+            };
+            setLoading(false);
+            // save data to database
+            editUser({ id, data: updatedData });
+            setImageFile(null);
+          }
+        });
+    } else {
+      const updatedData = {
+        name: editName,
+        designation: editDesignation,
+        email: editEmail,
+        about: bio,
+      };
+      //   save info to database
+      editUser({ id, data: updatedData });
+    }
   };
 
   return (
@@ -29,113 +80,84 @@ const MyProfile = () => {
         {/* info section */}
         <div className="md:col-span-4 bg-white rounded-lg px-5 py-8 h-min">
           <figure className="flex justify-center">
-            <img src={avatar} alt="" className="w-36" />
+            <img src={profilePhoto || avatar} alt="" className="w-36" />
           </figure>
-          <h2 className="text-center my-3 text-xl font-bold">Munim Rahman</h2>
-          <h3 className="">About</h3>
-          <p className="text-[#999999] text-sm text-justify">
-            Update Your Cover Letter
-          </p>
-          <div className="flex justify-between my-3">
-            <div>
-              <p>Age</p>
-              <p className="text-[#999999] text-sm">Update Your Birth Date</p>
-            </div>
-            <div>
-              <p>Gender</p>
-              <p className="text-[#999999] text-sm">Not Updated</p>
-            </div>
+          <div className="my-3 text-center">
+            <h2 className="text-xl font-bold">{name}</h2>
+            <p className="text-sm text-gray-500">
+              {designation || "Update Your Designation"}
+            </p>
           </div>
-          <p>Date Of Birth</p>
-          <p className="text-[#999999] text-sm">Update Your Birth Date</p>
+
+          <h3 className="">Bio</h3>
+          <p className="text-[#999999] text-sm text-justify">
+            {about || "Update Your Bio"}
+          </p>
+
+          <div>
+            <p>Email</p>
+            <p className="text-[#999999] text-sm">
+              {email || "Update Your Email"}
+            </p>
+          </div>
         </div>
         {/* update section */}
         <div className="md:col-span-8 bg-white rounded-lg p-5">
-          <h2 className="text-2xl font-medium">Personal Information</h2>
+          <h2 className="text-2xl font-medium">Edit Personal Information</h2>
           <form className="my-5" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="firstName">First Name</label> <br />
+                <label htmlFor="name">Name</label> <br />
                 <input
                   type="text"
-                  id="firstName"
-                  placeholder="First Name"
+                  id="name"
+                  placeholder="Name"
                   className="input input-bordered w-full max-w-xs mt-1 focus:outline-none"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
                 />
               </div>
               <div>
-                <label htmlFor="lastName">Last Name</label>
+                <label htmlFor="designation">Designation</label>
                 <br />
                 <input
                   type="text"
-                  id="lastName"
-                  placeholder="Last Name"
+                  id="designation"
+                  placeholder="React Developer"
                   className="input input-bordered w-full max-w-xs mt-1 focus:outline-none"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={editDesignation}
+                  onChange={(e) => setEditDesignation(e.target.value)}
                 />
-              </div>
-              <div>
-                <label htmlFor="dob">Date Of Birth</label>
-                <br />
-                <input
-                  type="date"
-                  id="dob"
-                  className="input input-bordered w-full max-w-xs mt-1 focus:outline-none"
-                  value={dob}
-                  onChange={(e) => setDob(e.target.value)}
-                />
-              </div>
-              <div>
-                <label htmlFor="gender">Gender</label>
-                <br />
-                <select
-                  id="gender"
-                  className="select select-bordered w-full max-w-xs mt-1 focus:outline-none"
-                  value={editGender}
-                  onChange={(e) => setEditGender(e.target.value)}
-                >
-                  <option disabled selected>
-                    Select Gender
-                  </option>
-                  <option>Male</option>
-                  <option>Female</option>
-                </select>
               </div>
             </div>
             <div className="mt-4">
-              <label htmlFor="email">Email Address</label>
+              <label htmlFor="email">Email</label>
               <br />
               <input
                 type="text"
                 id="email"
-                placeholder="Email Address"
+                placeholder="demo@gmail.com"
                 className="input input-bordered w-full mt-1 focus:outline-none"
                 value={editEmail}
                 onChange={(e) => setEditEmail(e.target.value)}
               />
             </div>
             <div className="mt-4">
-              <label htmlFor="phone">Phone Number</label>
+              <label htmlFor="phone">Profile Photo</label>
               <br />
               <input
-                type="text"
-                id="phone"
-                placeholder="Phone Number"
-                className="input input-bordered w-full mt-1 focus:outline-none"
-                value={editPhone}
-                onChange={(e) => setEditPhone(e.target.value)}
+                type="file"
+                className="file-input file-input-bordered w-full"
+                onChange={onImageChange}
               />
             </div>
             <div className="mt-4">
-              <label htmlFor="bio">About Me</label>
+              <label htmlFor="bio">Bio</label>
               <br />
               <textarea
                 id="bio"
                 className="textarea textarea-bordered focus:outline-none w-full h-28 mt-1"
-                placeholder="Write Your Comment . . ."
+                placeholder="Bio"
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
               />

@@ -1,6 +1,8 @@
 import ProjectCard from "./ProjectCard";
 
 const Projects = () => {
+  const projects = [1, 2, 3];
+
   return (
     <div className="min-h-screen p-5">
       <div className="flex justify-between items-center bg-white px-5 py-3 rounded-lg shadow">
@@ -26,10 +28,9 @@ const Projects = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-5">
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
-        <ProjectCard />
+        {projects.map((project) => (
+          <ProjectCard key={project._id} />
+        ))}
       </div>
     </div>
   );

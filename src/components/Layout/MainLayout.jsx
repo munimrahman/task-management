@@ -27,6 +27,14 @@ const MainLayout = () => {
       </li>
       <li>
         <NavLink
+          to={"/my-teams"}
+          className={({ isActive }) => (isActive ? activeClass : inActiveClass)}
+        >
+          My Teams
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
           to={"/projects"}
           className={({ isActive }) => (isActive ? activeClass : inActiveClass)}
         >
@@ -39,6 +47,14 @@ const MainLayout = () => {
           className={({ isActive }) => (isActive ? activeClass : inActiveClass)}
         >
           All Tasks
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={"/my-tasks"}
+          className={({ isActive }) => (isActive ? activeClass : inActiveClass)}
+        >
+          My Tasks
         </NavLink>
       </li>
       <li>
