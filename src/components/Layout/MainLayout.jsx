@@ -58,14 +58,6 @@ const MainLayout = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink
-          to={"/team-members"}
-          className={({ isActive }) => (isActive ? activeClass : inActiveClass)}
-        >
-          Team Members
-        </NavLink>
-      </li>
-      <li>
         <span className="ps-6">Logout</span>
       </li>
     </>

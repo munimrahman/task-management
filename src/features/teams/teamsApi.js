@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import apiSlice from "../api/apiSlice";
 
-export const usersApi = apiSlice.injectEndpoints({
+export const teamsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // get all teams
     getTeams: builder.query({
@@ -38,4 +38,4 @@ export const {
   useGetTeamQuery,
   useAddTeamMutation,
   useEditTeamsMutation,
-} = usersApi;
+} = teamsApi;

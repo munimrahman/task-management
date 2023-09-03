@@ -1,8 +1,11 @@
-const ProjectCard = () => {
+/* eslint-disable react/prop-types */
+
+const ProjectCard = ({ project }) => {
+  const { title, description } = project || {};
   return (
     <div className="col-span-1 shadow p-5 bg-white rounded-lg">
       <div className="flex justify-between items-center">
-        <h1 className="font-medium">Social Media</h1>
+        <h1 className="font-medium">{title}</h1>
         <figure className="hover:bg-gray-200 rounded-full p-1 hover:cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -26,10 +29,7 @@ const ProjectCard = () => {
       </div>
       <div className="mt-2">
         <p className="text-sm font-medium mb-">Project Description</p>
-        <p className="text-sm text-gray-600 text-justify">
-          Lorem ipsum dolor sit amet coctetur adipicing elit. Exerctionem, nulla
-          nesiunt illo commodi quis praesentm ur magni libero iure.
-        </p>
+        <p className="text-sm text-gray-600 text-justify">{description}</p>
       </div>
       <div className="mt-2">
         <p className="text-sm font-medium">Project Deadline</p>

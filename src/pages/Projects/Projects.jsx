@@ -1,7 +1,20 @@
+import { useGetProjectsQuery } from "../../features/projects/projectsApi";
 import ProjectCard from "./ProjectCard";
 
 const Projects = () => {
-  const projects = [1, 2, 3];
+  const { data: { projects = [] } = {} } = useGetProjectsQuery();
+  // TODO: replace id
+  const targetTeamMemberId = "64f23a10219063e8246e119d";
+
+  const myProjects = projects.filter((project) => {
+    if (
+      project.assignedTeam &&
+      project.assignedTeam.teamMembers.includes(targetTeamMemberId)
+    ) {
+      return true;
+    }
+    return false;
+  });
 
   return (
     <div className="min-h-screen p-5">
@@ -28,8 +41,8 @@ const Projects = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-5">
-        {projects.map((project) => (
-          <ProjectCard key={project._id} />
+        {myProjects.map((project) => (
+          <ProjectCard key={project._id} project={project} />
         ))}
       </div>
     </div>
