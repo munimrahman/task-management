@@ -1,9 +1,15 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  useAddTeamMutation,
+  useGetTeamsQuery,
+} from "../../features/teams/teamsApi";
 
 const CreateTeamModal = ({ isChecked, setModalCheck }) => {
   const [teamName, setTeamName] = useState("");
   const [teamDescription, setTeamDescription] = useState("");
+  const { refetch } = useGetTeamsQuery();
+  const [addTeam, { data }] = useAddTeamMutation();
 
   // TODO: replace id
   const id = "64f23a10219063e8246e119d";
@@ -13,11 +19,18 @@ const CreateTeamModal = ({ isChecked, setModalCheck }) => {
     const teamData = {
       name: teamName,
       description: teamDescription,
-      teamMembers: [id],
+      creatorsId: id,
     };
     console.log(teamData);
+    addTeam(teamData);
     setModalCheck(!isChecked);
   };
+
+  useEffect(() => {
+    if (data?.team) {
+      refetch();
+    }
+  }, [data, refetch]);
 
   return (
     <>
@@ -31,7 +44,7 @@ const CreateTeamModal = ({ isChecked, setModalCheck }) => {
       <div className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg text-center">Create Team</h3>
-          <form className="my-5">
+          <form onSubmit={handleSubmit} className="my-5">
             <div className="mt-4">
               <label htmlFor="teamName">Team Name</label>
               <br />
@@ -43,6 +56,7 @@ const CreateTeamModal = ({ isChecked, setModalCheck }) => {
                 className="input input-bordered w-full mt-1 focus:outline-none"
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
+                required
               />
             </div>
             <div className="mt-4">
@@ -57,19 +71,16 @@ const CreateTeamModal = ({ isChecked, setModalCheck }) => {
                 onChange={(e) => setTeamDescription(e.target.value)}
               />
             </div>
+            <div className="modal-action">
+              <button className="btn btn-neutral btn-sm">Create</button>
+              <button
+                onClick={() => setModalCheck(!isChecked)}
+                className="btn btn-sm"
+              >
+                Close
+              </button>
+            </div>
           </form>
-
-          <div className="modal-action">
-            <button onClick={handleSubmit} className="btn btn-neutral btn-sm">
-              Create
-            </button>
-            <button
-              onClick={() => setModalCheck(!isChecked)}
-              className="btn btn-sm"
-            >
-              Close
-            </button>
-          </div>
         </div>
       </div>
     </>

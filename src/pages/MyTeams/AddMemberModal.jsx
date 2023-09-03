@@ -19,7 +19,7 @@ const AddMemberModal = ({
     useGetUserByEmailQuery(email);
   const [editTeam, { data, isLoading }] = useEditTeamsMutation();
   const { refetch } = useGetTeamsQuery();
-  console.log(data);
+
   // TODO: replace id
   const id = "64f23a10219063e8246e119d";
 

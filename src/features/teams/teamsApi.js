@@ -13,6 +13,15 @@ export const usersApi = apiSlice.injectEndpoints({
       query: (id) => `/teams/${id}`,
     }),
 
+    // add team
+    addTeam: builder.mutation({
+      query: (data) => ({
+        url: "/teams",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     // edit team
     editTeams: builder.mutation({
       query: ({ id, data, cacheData, teamId }) => ({
@@ -20,46 +29,13 @@ export const usersApi = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-
-      // async onQueryStarted(
-      //   { id, data, cacheData },
-      //   { queryFulfilled, dispatch }
-      // ) {
-      //   // const patchResult = dispatch(
-      //   //   apiSlice.util.updateQueryData("getTeams", undefined, (draftTeams) => {
-      //   //     // const updatedIndex = draftTeams.teams.findIndex((team) => {
-      //   //     //   return team?._id == data?.team?._id;
-      //   //     // });
-      //   //     // draftTeams.teams[updatedIndex] = data?.team;
-      //   //     const findTeam = draftTeams.teams.find((team) => {
-      //   //       return team._id === id;
-      //   //     });
-      //   //     findTeam.teamMembers.push({ ...cacheData, _id: Date.now() });
-      //   //   })
-      //   // );
-      //   try {
-      //     const { data: res } = await queryFulfilled;
-      //     if (res) {
-      //       dispatch(
-      //         apiSlice.util.updateQueryData(
-      //           "getTeams",
-      //           undefined,
-      //           (draftTeams) => {
-      //             const updatedIndex = draftTeams.teams.findIndex((team) => {
-      //               return team?._id == data?.team?._id;
-      //             });
-      //             draftTeams.teams[updatedIndex] = data?.team;
-      //           }
-      //         )
-      //       );
-      //     }
-      //   } catch (error) {
-      //     //
-      //   }
-      // },
     }),
   }),
 });
 
-export const { useGetTeamsQuery, useGetTeamQuery, useEditTeamsMutation } =
-  usersApi;
+export const {
+  useGetTeamsQuery,
+  useGetTeamQuery,
+  useAddTeamMutation,
+  useEditTeamsMutation,
+} = usersApi;

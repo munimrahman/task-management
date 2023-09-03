@@ -37,9 +37,6 @@ const TeamCard = ({ team }) => {
             tabIndex={0}
             className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-max"
           >
-            {/* <li>
-              <span onClick={() => setModalCheck(!modalCheck)}>Edit Team</span>
-            </li> */}
             <li>
               <span onClick={() => setAddModalCheck(!addModalCheck)}>
                 Add Member
@@ -48,6 +45,7 @@ const TeamCard = ({ team }) => {
           </ul>
         </div>
       </div>
+
       <div className="mt-2">
         {teamMembers?.map(({ _id, name, profilePhoto, designation }) => (
           <div key={_id} className="flex gap-2 items-center mb-2">
