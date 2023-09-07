@@ -1,17 +1,14 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAddProjectMutation } from "../../features/projects/projectsApi";
 
 const initialState = {
-  name: "",
-  email: "",
-  address: "",
-  university: "",
-  profilePhoto: "",
-  about: "",
+  title: "",
+  description: "",
+  deadline: "",
 };
 
-const AddProjectModal = ({ id, isChecked, setModalCheck })=> {
+const AddProjectModal = ({ isChecked, setModalCheck }) => {
   const [projectData, setProjectData] = useState(initialState);
   const [addProject, { data }] = useAddProjectMutation();
 
@@ -23,7 +20,7 @@ const AddProjectModal = ({ id, isChecked, setModalCheck })=> {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    editUser({ data: projectData, id });
+    console.log(projectData);
     setModalCheck(!isChecked);
   };
 
@@ -38,105 +35,61 @@ const AddProjectModal = ({ id, isChecked, setModalCheck })=> {
 
       <div className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg text-center">Edit Profile</h3>
-          <form className="my-5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="name">Name</label> <br />
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="Name"
-                  className="input input-sm input-bordered w-full max-w-xs mt-1 focus:outline-none"
-                  value={projectData.name}
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label htmlFor="email">Email</label>
-                <br />
-                <input
-                  type="text"
-                  id="email"
-                  name="email"
-                  placeholder="Email"
-                  className="input input-sm input-bordered w-full max-w-xs mt-1 focus:outline-none"
-                  value={projectData.email}
-                  onChange={handleChange}
-                  disabled
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div>
-                <label htmlFor="address">Address</label> <br />
-                <input
-                  type="text"
-                  id="address"
-                  name="address"
-                  placeholder="Dhaka, Bangladesh"
-                  className="input input-sm input-bordered w-full max-w-xs mt-1 focus:outline-none"
-                  value={projectData.address}
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label htmlFor="university">University</label>
-                <br />
-                <input
-                  type="text"
-                  id="university"
-                  name="university"
-                  placeholder="Dhaka University"
-                  className="input input-sm input-bordered w-full max-w-xs mt-1 focus:outline-none"
-                  value={projectData.university}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="mt-4">
-              <label htmlFor="profilePhoto">Profile Photo Link</label>
-              <br />
+          <h3 className="font-bold text-lg text-center">Add Project</h3>
+          <form className="my-5" onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="title">Project Title</label> <br />
               <input
                 type="text"
-                id="profilePhoto"
-                name="profilePhoto"
-                placeholder="https://placehold.co/500"
-                className="input input-sm input-bordered w-full mt-1 focus:outline-none"
-                value={projectData.profilePhoto}
+                id="title"
+                name="title"
+                placeholder="Title"
+                className="input input-bordered w-full mt-1 focus:outline-none"
+                value={projectData.title}
                 onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="deadline">Project Deadline</label> <br />
+              <input
+                type="date"
+                id="deadline"
+                name="deadline"
+                placeholder="deadline"
+                className="input input-bordered w-full mt-1 focus:outline-none"
+                value={projectData.deadline}
+                onChange={handleChange}
+                required
               />
             </div>
             <div className="mt-4">
-              <label htmlFor="about">About Me</label>
+              <label htmlFor="description">Project Description</label>
               <br />
               <textarea
-                id="about"
-                name="about"
-                className="textarea textarea-bordered focus:outline-none w-full h-20 mt-1"
-                placeholder="About  . . ."
-                value={projectData.about}
+                id="description"
+                name="description"
+                className="textarea textarea-bordered focus:outline-none w-full h-28 mt-1"
+                placeholder="Team Description"
+                value={projectData.description}
                 onChange={handleChange}
+                required
               />
             </div>
+            <div className="modal-action">
+              <button className="btn btn-neutral btn-sm">Save</button>
+              <button
+                onClick={() => setModalCheck(!isChecked)}
+                className="btn btn-sm"
+              >
+                Close
+              </button>
+            </div>
           </form>
-
-          <div className="modal-action">
-            <button onClick={handleSubmit} className="btn btn-neutral btn-sm">
-              Save
-            </button>
-            <button
-              onClick={() => setModalCheck(!isChecked)}
-              className="btn btn-sm"
-            >
-              Close
-            </button>
-          </div>
         </div>
       </div>
     </>
   );
-}
+};
 
-export default AddProjectModal ==> ;
+export default AddProjectModal;

@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { useGetProjectsQuery } from "../../features/projects/projectsApi";
+import AddProjectModal from "./AddProjectModal";
 import ProjectCard from "./ProjectCard";
 
 const Projects = () => {
+  const [modalCheck, setModalCheck] = useState(false);
   const { data: { projects = [] } = {} } = useGetProjectsQuery();
   // TODO: replace id
   const targetTeamMemberId = "64f23a10219063e8246e119d";
@@ -21,7 +24,10 @@ const Projects = () => {
       <div className="flex justify-between items-center bg-white px-5 py-3 rounded-lg shadow">
         <h2 className="text-lg font-medium">All Projects</h2>
         <div>
-          <button className="bg-[#4C6FFF] text-white px-3 py-2 rounded-lg flex gap-1 items-center">
+          <button
+            className="bg-[#4C6FFF] text-white px-3 py-2 rounded-lg flex gap-1 items-center"
+            onClick={() => setModalCheck(!modalCheck)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -45,6 +51,7 @@ const Projects = () => {
           <ProjectCard key={project._id} project={project} />
         ))}
       </div>
+      <AddProjectModal isChecked={modalCheck} setModalCheck={setModalCheck} />
     </div>
   );
 };
