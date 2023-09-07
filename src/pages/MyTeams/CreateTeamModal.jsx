@@ -73,12 +73,12 @@ const CreateTeamModal = ({ isChecked, setModalCheck }) => {
             </div>
             <div className="modal-action">
               <button className="btn btn-neutral btn-sm">Create</button>
-              <button
+              <span
                 onClick={() => setModalCheck(!isChecked)}
                 className="btn btn-sm"
               >
                 Close
-              </button>
+              </span>
             </div>
           </form>
         </div>

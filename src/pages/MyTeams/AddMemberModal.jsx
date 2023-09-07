@@ -112,12 +112,12 @@ const AddMemberModal = ({
             >
               Add Member
             </button>
-            <button
+            <span
               onClick={() => setAddModalCheck(!isAddChecked)}
               className="btn btn-sm"
             >
               Close
-            </button>
+            </span>
           </div>
         </div>
       </div>

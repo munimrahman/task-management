@@ -1,6 +1,9 @@
+import { useState } from "react";
 import TaskCard from "./TaskCard";
+import AddTaskModal from "./AddTaskModal";
 
 const Tasks = () => {
+  const [modalCheck, setModalCheck] = useState(false);
   return (
     <div className="min-h-screen p-5">
       <div className="flex justify-between items-center bg-white px-5 py-3 rounded-lg shadow">
@@ -21,7 +24,10 @@ const Tasks = () => {
               <option value="-salary">Priority High-Low</option>
             </select>
           </div>
-          <button className="bg-[#4C6FFF] text-white px-3 py-2 rounded-lg flex gap-1 items-center">
+          <button
+            className="bg-[#4C6FFF] text-white px-3 py-2 rounded-lg flex gap-1 items-center"
+            onClick={() => setModalCheck(!modalCheck)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -72,6 +78,7 @@ const Tasks = () => {
           <TaskCard />
         </div>
       </div>
+      <AddTaskModal isChecked={modalCheck} setModalCheck={setModalCheck} />
     </div>
   );
 };
