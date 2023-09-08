@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, Outlet } from "react-router-dom";
+import { userLoggedOut } from "../../features/auth/authSlice";
 
 const MainLayout = () => {
   const [active, setActive] = useState(true);
+  const dispatch = useDispatch();
+  const { user: { profilePhoto } = {} } = useSelector((state) => state.auth);
 
   const activeClass = "ps-6 p-3 border-l-4 border-l-indigo-700 bg-[#DCDDDF]";
   const inActiveClass = "ps-6 p-3";
@@ -58,10 +62,13 @@ const MainLayout = () => {
         </NavLink>
       </li>
       <li>
-        <span className="ps-6">Logout</span>
+        <span className="ps-6" onClick={() => dispatch(userLoggedOut())}>
+          Logout
+        </span>
       </li>
     </>
   );
+
   return (
     <>
       <div className="hidden md:flex z-40">
@@ -111,7 +118,12 @@ const MainLayout = () => {
               <div className="dropdown dropdown-end">
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                   <div className="w-10 rounded-full">
-                    <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                    <img
+                      src={
+                        profilePhoto ||
+                        "https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                      }
+                    />
                   </div>
                 </label>
                 <ul
@@ -119,16 +131,14 @@ const MainLayout = () => {
                   className="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
                 >
                   <li>
-                    <a className="justify-between">
+                    <Link to="/my-profile" className="justify-between">
                       Profile
-                      <span className="badge">New</span>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a>Settings</a>
-                  </li>
-                  <li>
-                    <a>Logout</a>
+                    <span onClick={() => dispatch(userLoggedOut())}>
+                      Logout
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -180,17 +190,11 @@ const MainLayout = () => {
                 className="mt-3 p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 z-10"
               >
                 <li>
-                  <a className="justify-between">
+                  <Link to="/my-profile" className="justify-between">
                     Profile
-                    <span className="badge">New</span>
-                  </a>
+                  </Link>
                 </li>
-                <li>
-                  <a>Settings</a>
-                </li>
-                <li>
-                  <a>Logout</a>
-                </li>
+                <span onClick={() => dispatch(userLoggedOut())}>Logout</span>
               </ul>
             </div>
             {/* </div> */}

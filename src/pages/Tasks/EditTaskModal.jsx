@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useGetProjectsQuery } from "../../features/projects/projectsApi";
 import { useGetTeamsQuery } from "../../features/teams/teamsApi";
 import {
-  useAddTasksMutation,
+  useEditTasksMutation,
   useGetTasksQuery,
 } from "../../features/task/taskApi";
 
@@ -17,11 +17,15 @@ const initialState = {
   status: "pending",
 };
 
-const AddTaskModal = ({ isChecked, setModalCheck }) => {
+const EditTaskModal = ({ task, isChecked, setModalCheck }) => {
   const [taskData, setTaskData] = useState(initialState);
   const { data: { projects = [] } = {} } = useGetProjectsQuery();
-  const [addTask, { data }] = useAddTasksMutation();
   const { refetch } = useGetTasksQuery();
+  const [editTask, { data }] = useEditTasksMutation();
+
+  useEffect(() => {
+    setTaskData(task);
+  }, [task]);
 
   // TODO: replace id
   const targetTeamMemberId = "64f23a10219063e8246e119d";
@@ -60,7 +64,7 @@ const AddTaskModal = ({ isChecked, setModalCheck }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTask(taskData);
+    editTask({ data: taskData, id: task._id });
     setModalCheck(!isChecked);
   };
 
@@ -202,4 +206,4 @@ const AddTaskModal = ({ isChecked, setModalCheck }) => {
   );
 };
 
-export default AddTaskModal;
+export default EditTaskModal;
