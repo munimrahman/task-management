@@ -1,9 +1,38 @@
 import { useState } from "react";
 import TaskCard from "./TaskCard";
 import AddTaskModal from "./AddTaskModal";
+import { useGetProjectsQuery } from "../../features/projects/projectsApi";
+import { useGetTasksQuery } from "../../features/task/taskApi";
 
 const Tasks = () => {
   const [modalCheck, setModalCheck] = useState(false);
+  const { data: { projects = [] } = {} } = useGetProjectsQuery();
+  const { data: { tasks = [] } = {} } = useGetTasksQuery();
+  // TODO: replace id
+  const targetTeamMemberId = "64f23a10219063e8246e119d";
+
+  const myProjects = projects.filter((project) => {
+    if (
+      project.assignedTeam &&
+      project.assignedTeam.teamMembers.includes(targetTeamMemberId)
+    ) {
+      return true;
+    }
+    return false;
+  });
+
+  // get my team tasks
+  const myTeamTasks = tasks.filter((task) => {
+    for (const el of myProjects) {
+      if (el._id === task.project._id) return true;
+    }
+    return false;
+  });
+
+  const pending = myTeamTasks.filter((t) => t.status === "pending");
+  const inProgress = myTeamTasks.filter((t) => t.status === "in-progress");
+  const completed = myTeamTasks.filter((t) => t.status === "completed");
+
   return (
     <div className="min-h-screen p-5">
       <div className="flex justify-between items-center bg-white px-5 py-3 rounded-lg shadow">
@@ -52,30 +81,27 @@ const Tasks = () => {
           <h3 className="font-medium mb-1 py-2 text-center bg-red-200 text-red-600 rounded-lg">
             Pending
           </h3>
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
+          {pending.map((task) => (
+            <TaskCard key={task._id} task={task} from={"pending"} />
+          ))}
         </div>
         {/* In Progress Tasks */}
         <div className="col-span-1">
           <h3 className="font-medium mb-1 py-2 text-center bg-blue-200 text-blue-600 rounded-lg">
             In Progress
           </h3>
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
+          {inProgress.map((task) => (
+            <TaskCard key={task._id} task={task} from={"in-progress"} />
+          ))}
         </div>
         {/* Completed Tasks */}
         <div className="col-span-1">
           <h3 className="font-medium mb-1 py-2 text-center bg-green-200 text-green-600 rounded-lg">
             Completed
           </h3>
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
-          <TaskCard />
+          {completed.map((task) => (
+            <TaskCard key={task._id} task={task} from={"completed"} />
+          ))}
         </div>
       </div>
       <AddTaskModal isChecked={modalCheck} setModalCheck={setModalCheck} />

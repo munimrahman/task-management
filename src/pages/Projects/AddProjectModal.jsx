@@ -1,15 +1,29 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
-import { useAddProjectMutation } from "../../features/projects/projectsApi";
+import { useEffect, useState } from "react";
+import {
+  useAddProjectMutation,
+  useGetProjectsQuery,
+} from "../../features/projects/projectsApi";
+import { useGetTeamsQuery } from "../../features/teams/teamsApi";
 
 const initialState = {
   title: "",
   description: "",
   deadline: "",
+  assignedTeam: "",
 };
 
 const AddProjectModal = ({ isChecked, setModalCheck }) => {
   const [projectData, setProjectData] = useState(initialState);
+  const { data: { teams = [] } = {} } = useGetTeamsQuery();
+  const { refetch } = useGetProjectsQuery();
+
+  // TODO: replace id
+  const id = "64f23a10219063e8246e119d";
+  const myTeams = teams.filter((team) => {
+    return team.teamMembers.some((member) => member._id === id);
+  });
+
   const [addProject, { data }] = useAddProjectMutation();
 
   const handleChange = (e) => {
@@ -20,9 +34,15 @@ const AddProjectModal = ({ isChecked, setModalCheck }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(projectData);
+    addProject(projectData);
     setModalCheck(!isChecked);
   };
+
+  useEffect(() => {
+    if (data?.project) {
+      refetch();
+    }
+  }, [data, refetch]);
 
   return (
     <>
@@ -50,20 +70,41 @@ const AddProjectModal = ({ isChecked, setModalCheck }) => {
                 required
               />
             </div>
-            <div>
-              <label htmlFor="deadline">Project Deadline</label> <br />
-              <input
-                type="date"
-                id="deadline"
-                name="deadline"
-                placeholder="deadline"
-                className="input input-bordered w-full mt-1 focus:outline-none"
-                value={projectData.deadline}
-                onChange={handleChange}
-                required
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-1">
+              <div>
+                <label className="" htmlFor="name">
+                  Assign To
+                </label>
+                <br />
+                <select
+                  className="select select-bordered focus:outline-none w-full max-w-xs"
+                  name="assignedTeam"
+                  value={projectData.assignedTeam}
+                  onChange={handleChange}
+                >
+                  {myTeams?.map(({ _id, name }) => (
+                    <option key={_id} value={_id}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="deadline">Project Deadline</label> <br />
+                <input
+                  type="date"
+                  id="deadline"
+                  name="deadline"
+                  placeholder="deadline"
+                  className="input input-bordered w-full mt-1 focus:outline-none"
+                  value={projectData.deadline}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
             </div>
-            <div className="mt-4">
+
+            <div className="mt-2">
               <label htmlFor="description">Project Description</label>
               <br />
               <textarea
@@ -76,6 +117,7 @@ const AddProjectModal = ({ isChecked, setModalCheck }) => {
                 required
               />
             </div>
+
             <div className="modal-action">
               <button className="btn btn-neutral btn-sm">Save</button>
               <span
